@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 
 function App() {
@@ -26,7 +25,9 @@ function App() {
   const increaseQuantity = (id) => {
     setCart(
       cart.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+        item.id === id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
       )
     );
   };
@@ -34,31 +35,47 @@ function App() {
   const decreaseQuantity = (id) => {
     setCart(
       cart.map((item) =>
-        item.id === id && item.quantity > 0
+        item.id === id && item.quantity > 1
           ? { ...item, quantity: item.quantity - 1 }
           : item
       )
     );
   };
 
-  const totalAmount = cart.reduce(
-    (acc, item) => acc + item.price * item.quantity,
+  const total = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
     0
   );
 
   return (
     <div>
       <h1>Shopping Cart</h1>
+
       {cart.map((item) => (
         <div key={item.id}>
           <h2>{item.name}</h2>
+
           <p>Price: ₹{item.price}</p>
+
           <p>Quantity: {item.quantity}</p>
-          <button onClick={() => decreaseQuantity(item.id)}>-</button>
-          <button onClick={() => increaseQuantity(item.id)}>+</button>
+
+          <button
+            aria-label={`Decrease ${item.name}`}
+            onClick={() => decreaseQuantity(item.id)}
+          >
+            -
+          </button>
+
+          <button
+            aria-label={`Increase ${item.name}`}
+            onClick={() => increaseQuantity(item.id)}
+          >
+            +
+          </button>
         </div>
       ))}
-      <h3>Total: ₹{totalAmount}</h3>
+
+      <h2>Total: ₹{total}</h2>
     </div>
   );
 }
